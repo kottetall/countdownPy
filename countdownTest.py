@@ -33,18 +33,30 @@ def randomTarget():
 def possibleSolutions(numbers):
     n1, n2, n3, n4, n5, n6 = numbers
 
-    # brute force
+    # brute force - Onödigt omständigt, går att göra bättre!
     solutions = []
     operand = ["+", "-", "/", "*"]
     for one in range(4):
+        exampleOne = str(n1) + str(operand[one]) + str(n2)
+        solutions.append(exampleOne)
+        print("Går igenom uträkning: " + exampleOne)
         for two in range(4):
+            exampleTwo = str(n1) + str(operand[one]) + str(n2) + str(operand[two]) + str(n3)
+            solutions.append(exampleTwo)
+            print("Går igenom uträkning: " + exampleTwo)
             for three in range(4):
+                exampleThree = str(n1) + str(operand[one]) + str(n2) + str(operand[two]) + str(n3) + str(operand[three]) + str(n4)
+                solutions.append(exampleThree)
+                print("Går igenom uträkning: " + exampleThree)
                 for four in range(4):
+                    exampleFour = str(n1) + str(operand[one]) + str(n2) + str(operand[two]) + str(n3) + str(operand[three]) + str(n4) + str(operand[four]) + str(n5)
+                    solutions.append(exampleFour)
+                    print("Går igenom uträkning: " + exampleFour)
                     for five in range(4):
                         #onödigt att lägga detta separat, kan utvärdera direkt
-                        example = str(n1) + str(operand[one]) + str(n2) + str(operand[two]) + str(n3) + str(operand[three]) + str(n4) + str(operand[four]) + str(n5) + str(operand[five]) + str(n6)
-                        solutions.append(example)
-                        print("Går igenom uträkning: " + example)
+                        exampleFive = str(n1) + str(operand[one]) + str(n2) + str(operand[two]) + str(n3) + str(operand[three]) + str(n4) + str(operand[four]) + str(n5) + str(operand[five]) + str(n6)
+                        solutions.append(exampleFive)
+                        print("Går igenom uträkning: " + exampleFive)
 
     return solutions
 
@@ -60,7 +72,6 @@ def solve(target, numbers):
     fiveLow = target - 10
     fiveHigh = target + 10
 
-
     for calculation in numbers:
         answer = eval(calculation)
         if answer == target:
@@ -75,16 +86,35 @@ def solve(target, numbers):
 
     return evauationOfCalculations
 
+def printSolution(randomNums, target, numOfPossibleCalcs, calcEval):
+    print("")
+
+    print("Numren som slumpades fram var: \n" + str(randomNums))
+    print("Målet blev: " + str(target) + "\n")
+    print("Av " + str(numOfPossibleCalcs) + " möjliga uträkningar, blir svaret:\n")
+
+    if len(calcEval["10p"]) > 0:
+        print("finns lösning!")
+        for ten in calcEval["10p"]:
+            print("\t" + ten)
+    elif len(calcEval["7p"]):
+        print("Fanns ingen 10p, men någon/några 7p:")
+        for seven in calcEval["7p"]:
+            print("\t" + seven)
+    elif len(calcEval["5p"]):
+        print("Fanns ingen 10p eller 7p, men någon/några 5p:")
+        for five in calcEval["5p"]:
+            print("\t" + five)
+    else:
+        print("Ingen lösning gick att finna...")
+
 
 #### MAIN ####
-choice = 1
+choice = random.randrange(1, 4, 1)
 randomNums = randomLarge(choice) + randomSmall(6 - choice)
 target = randomTarget()
+
 possibleCalculations = possibleSolutions(randomNums)
-#solve(target, possibleCalculations)
+calcEval = solve(target, possibleCalculations)
 
-print(solve(target, possibleCalculations))
-
-
-print(target)
-print(randomNums)
+printSolution(randomNums, target, len(possibleCalculations), calcEval)
